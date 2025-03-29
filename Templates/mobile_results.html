@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Detection Results - Southern Railways</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            padding: 30px;
+            background: linear-gradient(135deg, #e0e4e8 0%, #f6f7f9 100%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            max-width: 150px;
+            height: auto;
+        }
+
+        .title {
+            font-size: 26px;
+            font-weight: bold;
+            margin: 15px 0;
+            color: #0056b3;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .results-section {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #0056b3;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .summary-stats {
+            background-color: #f0f7ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .detection-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .image-card {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .image-info {
+            padding: 12px;
+            font-size: 14px;
+        }
+
+        .timestamp {
+            color: #666;
+        }
+
+        .back-button {
+            display: inline-block;
+            background-color: #555;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 20px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="{{ url_for('static', filename='Picture1.png') }}" alt="Southern Railways Logo" class="logo">
+            <h1 class="title">Southern Railways - Mobile Detection Results</h1>
+            <p class="subtitle">Processing completed successfully</p>
+        </div>
+
+        <div class="results-section">
+            <h2>Mobile Detection Results</h2>
+
+            <div class="summary-stats">
+                <p><strong>Total mobile phones detected:</strong> {{ total_mobiles }}</p>
+                <p><strong>Processing time:</strong> {{ processing_time }} seconds</p>
+                <p><strong>Video duration:</strong> {{ video_duration }} minutes</p>
+            </div>
+        </div>
+
+        <div class="results-section">
+            <h2>Detected Mobile Phone Images</h2>
+            {% if detected_images %}
+            <div class="detection-images">
+                {% for image in detected_images %}
+                <div class="image-card">
+                    <img src="/images/{{ image.filename }}" alt="Detected mobile phone">
+                    <div class="image-info">
+                        <div class="timestamp">Timestamp: {{ image.timestamp }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p>No mobile phones were detected in the video.</p>
+            {% endif %}
+        </div>
+
+        <a href="/" class="back-button">Back to Upload</a>
+    </div>
+</body>
+
+</html>

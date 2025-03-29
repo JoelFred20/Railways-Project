@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processing Results - Southern Railways</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            padding: 30px;
+            background: linear-gradient(135deg, #e0e4e8 0%, #f6f7f9 100%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            max-width: 150px;
+            height: auto;
+        }
+
+        .title {
+            font-size: 26px;
+            font-weight: bold;
+            margin: 15px 0;
+            color: #0056b3;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .results-section {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #0056b3;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .download-links {
+            margin-bottom: 25px;
+        }
+
+        .download-button {
+            display: inline-block;
+            background-color: #0056b3;
+            color: white;
+            padding: 10px 15px;
+            margin: 5px 10px 5px 0;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .download-button:hover {
+            background-color: #003d82;
+        }
+
+        .detection-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .image-card {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .back-button {
+            display: inline-block;
+            background-color: #555;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 20px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #333;
+        }
+
+        .signal-status {
+            background-color: #f0f7ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .signal-status-item {
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .signal-done {
+            background-color: #e6f3e6;
+            color: #2b7a2b;
+            border-left: 5px solid #2b7a2b;
+        }
+
+        .signal-missed {
+            background-color: #f3e6e6;
+            color: #7a2b2b;
+            border-left: 5px solid #7a2b2b;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="{{ url_for('static', filename='Picture1.png') }}" alt="Southern Railways Logo" class="logo">
+            <h1 class="title">Southern Railways - Detection Results</h1>
+            <p class="subtitle">Processing completed successfully</p>
+        </div>
+
+        <div class="results-section">
+            <h2>Processing Results</h2>
+
+            <div class="summary-stats">
+                <p><strong>Total signals detected:</strong> {{ total_signals }}</p>
+                <p><strong>Processing time:</strong> {{ processing_time }} seconds</p>
+                <p><strong>Video duration:</strong> {{ video_duration }} minutes</p>
+            </div>
+
+            <div class="download-links">
+                <h3>Download Results:</h3>
+                <a href="/download/{{ log_file }}" class="download-button">Download Detection Log</a>
+                <a href="/download/{{ updated_report }}" class="download-button">Download Updated Report</a>
+                <a href="/download/{{ signals_file }}" class="download-button">Download Signal Status Report</a>
+            </div>
+        </div>
+
+        <div class="results-section">
+            <h2>Detected Signal Images</h2>
+            {% if detected_images %}
+            <div class="detection-images">
+                {% for image in detected_images %}
+                <div class="image-card">
+                    <img src="/images/{{ image.filename }}" alt="Detected signal">
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p>No signals were detected in the video.</p>
+            {% endif %}
+        </div>
+
+        <div class="results-section">
+            <h2>Signal Status</h2>
+            <div class="signal-status">
+                {% for coordinate in signal_coordinates.split('\n') %}
+                {%- if 'Done' in coordinate -%}
+                <span class="signal-status-item signal-done">{{ coordinate }}</span>
+                {%- elif 'Missed' in coordinate -%}
+                <span class="signal-status-item signal-missed">{{ coordinate }}</span>
+                {%- else -%}
+                <span class="signal-status-item">{{ coordinate }}</span>
+                {%- endif -%}
+                {% endfor %}
+            </div>
+        </div>
+
+        <a href="/" class="back-button">Back to Upload</a>
+    </div>
+</body>
+
+</html>

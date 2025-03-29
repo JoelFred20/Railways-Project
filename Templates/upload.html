@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Southern Railways - Call-Out Signal Detection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #e0e4e8 0%, #f6f7f9 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo-container img {
+            max-width: 150px;
+            height: auto;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 10px;
+            color: #0056b3;
+        }
+
+        form {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            width: 100%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .file-input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .file-input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        input[type="file"] {
+            display: block;
+            margin: 5px 0;
+            padding: 8px;
+            font-size: 0.95rem;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #003d82;
+        }
+
+        .error-message {
+            color: red;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='Picture1.png') }}" alt="Southern Railways Logo">
+            <div class="title">Southern Railways - Call-Out Signal Detection</div>
+        </div>
+
+        {% if error %}
+        <div class="error-message">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <div class="file-input-group">
+                <label for="video">Video File:</label>
+                <input type="file" id="video" name="video" accept="video/*" required>
+            </div>
+
+            <div class="file-input-group">
+                <label for="report1">Report File 1:</label>
+                <input type="file" id="report1" name="report1" accept=".xlsx" required>
+            </div>
+
+            <div class="file-input-group">
+                <label for="report2">Report File 2:</label>
+                <input type="file" id="report2" name="report2" accept=".xlsx" required>
+            </div>
+
+            <button type="submit">Process Files</button>
+        </form>
+    </div>
+</body>
+
+</html>
